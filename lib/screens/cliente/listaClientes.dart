@@ -27,7 +27,7 @@ class ListaClientes extends StatelessWidget {
           icon: Icon(Icons.person_rounded),
         ),
         body: FutureBuilder<List<Cliente>>(
-        future: buscartodos(),
+        future: buscarTodosClientes(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:

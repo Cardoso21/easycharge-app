@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'http/webCliente.dart';
+import 'http/webDivida.dart';
 import 'models/clientes/listaClientes.dart';
 import 'models/clientes/listaEndereco.dart';
 import 'models/funcionarios/listaFuncionario.dart';
 
 void main() {
-  buscartodos();
+  buscarTodosClientes();
+  buscartodasDividas();
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ListaDeFuncionarios()),
@@ -30,6 +32,7 @@ class EasychargeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.teal,

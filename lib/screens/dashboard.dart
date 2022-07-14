@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'autenticacao/login.dart';
-import 'cliente/listaClientes.dart';
 import 'menuDrawer.dart';
 
 class Dashboard extends StatelessWidget {

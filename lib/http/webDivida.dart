@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:easycharge/models/clientes/cliente.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
+
+import '../models/dividas/dividas.dart';
 
 class LoggingInterceptor implements InterceptorContract {
   @override
@@ -18,46 +19,42 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
-Future<List<Cliente>> buscarTodosClientes() async {
-  final List<Cliente> clientes = [];
+Future<List<Divida>> buscartodasDividas() async {
+  final List<Divida> dividas = [];
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
   final Response response = await client
-      .get(Uri.http('172.19.144.1:8080', '/api/clientes'))
+      .get(Uri.http('172.19.144.1:8080', '/api/dividas'))
       .timeout(Duration(seconds: 5));
   final List<dynamic> decodedJson = jsonDecode(response.body);
 
-  for (Map<String, dynamic> cliente in decodedJson) {
-    final Cliente json = Cliente(
-      cliente['id'],
-      cliente['nome'],
-      cliente['cpf'],
-      cliente['telefone'],
-      cliente['email'],
-      cliente['profissao'],
-      cliente['renda'],
-      cliente['endereco']['rua'],
-      cliente['endereco']['numero'],
-      cliente['endereco']['complemento'],
-      cliente['endereco']['bairro'],
-      cliente['endereco']['cidade'],
-      cliente['endereco']['estado'],
+  for (Map<String, dynamic> divida in decodedJson) {
+    final Divida json = Divida(
+
+      divida['id'],
+      divida['valor'],
+      divida['dataAbertura'],
+      divida['dataQuitacao'],
+      divida['descricao'],
+      divida['cliente'],
+      divida['statusDivida'],
+
     );
-    clientes.add(json);
+    dividas.add(json);
   }
 
-  return clientes;
+  return dividas;
 }
 
-void cadastroCliente(Cliente cliente) async {
+void cadastroDivida(Divida divida) async {
   final Client client =
       InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-  final String clienteJson = jsonEncode(cliente.mapJson());
+  final String dividaJson = jsonEncode(divida.mapJson());
 
   final Response response = await client.post(
-    Uri.http('172.19.144.1:8080', '/api/clientes'),
+    Uri.http('172.19.144.1:8080', '/api/dividas'),
     headers: {'Content-type': 'application/json'},
-    body: clienteJson,
+    body: dividaJson,
   );
 
   Map<String, dynamic> json = jsonDecode(response.body);
